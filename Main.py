@@ -27,12 +27,13 @@ if __name__ == "__main__":
 		new_user_id = remain_queue.get()
 		if new_user_id == None:
 			break
-		if new_user_id in user_set:
-			continue
 
 		new_user_name,new_user_friend_ids = getOneUserData(new_user_id)
-		user_set[new_user_id] = [new_user_name,new_user_friend_ids]		
+		user_set[new_user_id] = [new_user_name,new_user_friend_ids]
+		print(new_user_id +" : "+ user_set[new_user_id][0])
 		for x in new_user_friend_ids:
+			if x in user_set:
+				continue
 			remain_queue.put(x)
 
 	user_dao = UserDAO()
