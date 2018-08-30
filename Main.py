@@ -38,5 +38,5 @@ if __name__ == "__main__":
 
 	user_dao = UserDAO()
 	for x in user_set:
-		user_dao.insertOne(x,user_set[x][0],user_set[x][1])
+		user_dao.insertOne(x,user_set[x][0],user_set[x][1][:20])
 	user_dao.printAll()
