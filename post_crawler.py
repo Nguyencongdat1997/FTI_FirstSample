@@ -14,7 +14,7 @@ for uid in user_ids:
 	user_posts = facebookapi_connector.get_posts_of_one_user(uid)
 	for post_id in user_posts:
 		post = user_posts[post_id]
-		data_to_save = dict(post_id= post_id, message= post[0], creator_id= post[1])
-		post_saver.write_to_file(json.dumps(data_to_save))
+		data_to_save = dict(post_id= post_id, message= post[0], creator_id= post[1])		
+		post_saver.write_to_file(json.dumps(data_to_save, ensure_ascii=False, encoding='utf-8'))
 		count += 1
 		print (str(count) + ':' + post_id)
