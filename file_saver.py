@@ -43,8 +43,8 @@ import os
 
 class FileSaver(object):
 	
-	def __init__(self):
-		self.folder = './'
+	def __init__(self, folder):
+		self.folder =  folder
 		self.file_name = ''
 
 	def create_file(self, new_file_name):
@@ -62,9 +62,8 @@ class FileSaver(object):
 class PostSaver(FileSaver):
 	
 	def __init__(self):
-		super(PostSaver, self).__init__()
+		super(PostSaver, self).__init__('./data/post/')
 		self.max_num_of_line = 1000		
-		self.folder = './post/'
 		self.update_file_name()
 	
 	def get_lastest_file(self):				
@@ -80,9 +79,9 @@ class PostSaver(FileSaver):
 			self.create_file(self.file_name)	
 		else:
 			file_handle = open(self.folder + self.file_name, 'r')
-			lineList = file_handle.readlines()
+			line_list = file_handle.readlines()
 
-			if len(lineList) >= self.max_num_of_line:
+			if len(line_list) >= self.max_num_of_line:
 				file_handle.close()
 				file_index += 1
 				self.file_name = str(file_index) + '.txt'

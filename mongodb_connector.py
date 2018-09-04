@@ -94,4 +94,3 @@ class CommentDAO(MongoDAOBase):
 		for x in self.collection.find():
 			print(x)
 
-
