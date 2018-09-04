@@ -44,7 +44,7 @@ import os
 class FileSaver(object):
 	
 	def __init__(self):
-		self.folder = '.\\'
+		self.folder = './'
 		self.file_name = ''
 
 	def create_file(self, new_file_name):
@@ -64,7 +64,7 @@ class PostSaver(FileSaver):
 	def __init__(self):
 		super(PostSaver, self).__init__()
 		self.max_num_of_line = 1000		
-		self.folder = '.\\post\\'
+		self.folder = './post/'
 		self.update_file_name()
 	
 	def get_lastest_file(self):				
