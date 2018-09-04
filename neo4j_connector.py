@@ -4,7 +4,7 @@ from neo4jrestclient import client
 class Neo4jConnector(object):	
 
 	def __init__(self):
-		self.neo4j_gdb = client.GraphDatabase('http://localhost:7474/db/data/')
+		self.neo4j_gdb = client.GraphDatabase('http://localhost:7474/db/data/', username='neo4j', password='123456')
 	
 	def create_node(self, label, mongo_id):		
 		if not self.is_node(mongo_id):

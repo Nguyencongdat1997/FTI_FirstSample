@@ -1,5 +1,5 @@
 from mongodb_connector import UserDAO,PostDAO,CommentDAO
-from neo4j_connector import Neo4jConnector
+#from neo4j_connector import Neo4jConnector
 from facebookapi_connector import FacebookAPIConnector
 
 import Queue
@@ -22,7 +22,7 @@ def crawl_users():
 		print(new_user_id + ' : ' + new_user_name)
 
 		user_dao.insert_one(new_user_id, new_user_name)		
-		neo4j_connector.create_node('User', new_user_id)
+#		neo4j_connector.create_node('User', new_user_id)
 
 		for x in new_user_friend_ids:
 			if user_dao.find_one(x):
@@ -39,7 +39,7 @@ def crawl_friendships():
 		for x in user_friend_ids:
 			if user_dao.find_one(x):
 				print(uid + ' -Friend_of-> ' + x)
-				neo4j_connector.create_relationship(uid, x, 'Friend_of')			
+				#neo4j_connector.create_relationship(uid, x, 'Friend_of')			
 
 
 def crawl_posts():
@@ -52,8 +52,8 @@ def crawl_posts():
 			if user_dao.find_one(post[1]):
 				print('Post: ' + post[1] + '-Create->' + post_id)
 				post_dao.insert_one(post_id, post[0])
-				neo4j_connector.create_node('Post', post_id)
-				neo4j_connector.create_relationship(post[1], post_id, 'Create')
+				#neo4j_connector.create_node('Post', post_id)
+				#neo4j_connector.create_relationship(post[1], post_id, 'Create')
 
 				comments = post[2]
 				for comment_id in comments:
@@ -61,15 +61,15 @@ def crawl_posts():
 					if user_dao.find_one(comment[1]):
 						print('Comment: '+ comment[1] + '-Create->' + comment_id)
 						comment_dao.insert_one(comment_id, comment[0])
-						neo4j_connector.create_node('Comment', comment_id)
-						neo4j_connector.create_relationship(comment[1], comment_id, 'Create')
-						neo4j_connector.create_relationship(post_id, comment_id, 'Contain')
+						#neo4j_connector.create_node('Comment', comment_id)
+						#neo4j_connector.create_relationship(comment[1], comment_id, 'Create')
+						#neo4j_connector.create_relationship(post_id, comment_id, 'Contain')
 
 
 user_dao = UserDAO()
 post_dao = PostDAO()
 comment_dao = CommentDAO()
-neo4j_connector = Neo4jConnector()
+#neo4j_connector = Neo4jConnector()
 facebookapi_connector = FacebookAPIConnector()
 crawl_users()
 crawl_friendships()
