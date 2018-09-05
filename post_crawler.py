@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, './utilities')
 from facebookapi_connector import FacebookAPIConnector
 from mongodb_connector import UserDAO,PostDAO,CommentDAO
 from file_saver import PostSaver
@@ -5,6 +7,7 @@ import json
 import datetime
 
 facebookapi_connector = FacebookAPIConnector()
+facebookapi_connector.get_token()
 user_dao = UserDAO()
 post_saver = PostSaver()
 

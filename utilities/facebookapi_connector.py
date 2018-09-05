@@ -7,6 +7,15 @@ class FacebookAPIConnector(object):
 		self.url = 'https://graph.facebook.com/'
 		self.access_token = 'EAAAAAYsX7TsBACYOsVKFOLtRB2WOG0Fp53IU07ffjZCZB4LQRlNsQxS3wZC0YhxNcE00FjKPxNiO6xSi129cgovRbh2AoNDoNoT6TJQNAAKeZCupKMfrp9Su8DbROVHnTGJEK6ecBs1Qi7zcZCFPaadKZAtZCUwJ3tB9FOGmJfyFtLJ1GteYIwD'
 
+	def get_token(self):
+		response = requests.get(url='http://localhost:5000/get')		
+		if response.json() != 'Error: No token available':
+			self.access_token = response.json()
+			print('Update new token: ' + self.access_token)
+		else:
+			print(response.json())
+		return None
+
 	def get_json_attribute(self, data, attribute, default_value):
 		return data.get(attribute) or default_value
 

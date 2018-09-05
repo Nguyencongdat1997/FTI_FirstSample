@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, './utilities')
 from mongodb_connector import UserDAO,PostDAO,CommentDAO
 #from neo4j_connector import Neo4jConnector
 from facebookapi_connector import FacebookAPIConnector
