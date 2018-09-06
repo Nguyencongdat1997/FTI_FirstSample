@@ -9,6 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///token.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
 
+
 @app.route("/get")
 def get_token():
 	token = token_dao.get_one_validated()
@@ -19,7 +20,9 @@ def get_token():
 
 @app.route("/insert/<value>")
 def insert_token(value):
-	token_dao.insert_one(value)
+	result = token_dao.insert_one(value)
+	if result == 1:
+		return 'Error: Token has been already in database', 200
 	return 'OK', 201
 
 

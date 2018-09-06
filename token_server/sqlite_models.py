@@ -26,8 +26,11 @@ class Token(db.Model):
 	
 class TokenDAO(object):
 	def insert_one(self, new_token_value):
+		if (len(db.session.query(Token).filter(Token.token_value == new_token_value).all()) > 0):
+			return 1
 		db.session.add(Token(token_value = new_token_value, valid_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 		db.session.commit()
+		return 0
 	
 	def get_one_validated(self):
 		now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
