@@ -12,6 +12,7 @@ services:
             - net1
         depends_on:
             - konga
+        tty: true
 
     kong-database:
         image: postgres:9.6
