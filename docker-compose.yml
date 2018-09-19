@@ -7,7 +7,7 @@ services:
         ports:
             - "5001:5001"
         volumes:
-            - .:/code
+            - .:/app
         networks:
             - net1
         depends_on:
