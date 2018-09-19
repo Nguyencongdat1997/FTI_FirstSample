@@ -7,12 +7,11 @@ services:
         ports:
             - "5001:5001"
         volumes:
-            - .:/app
+            - .:/datgatto
         networks:
             - net1
         depends_on:
             - konga
-        tty: true
 
     kong-database:
         image: postgres:9.6
