@@ -43,30 +43,52 @@ class FacebookAPIConnector(object):
 		friend_ids = [x['id'].encode('utf-8') for x in self.get_json_attribute(response.json(), 'friends', {'data':[]})['data']]
 		return friend_ids
 
+	def get_reaction_of_one_post(self, post_id):
+		url = self.url + post_id + '/reactions/'
+		params = dict(
+			fields = 'type',
+			access_token = self.access_token,
+		)
+		response = requests.get(url=url, params=params)
 
-	def get_posts_of_one_user(self, uid):
+		reactions = {'NONE': 0, 'LIKE': 0,'LOVE': 0, 'WOW': 0, 'HAHA': 0, 'SAD': 0, 'ANGRY': 0, 'THANKFUL': 0}
+		list_reactions_raw = self.get_json_attribute(response.json(), 'data', [])
+		for reaction_raw in list_reactions_raw:
+			reactions[reaction_raw['type']] = reactions[reaction_raw['type']] + 1
+
+		return reactions
+
+
+	def get_posts_of_one_user(self, uid, since, limit):
 		url = self.url + uid + '/feed/'
 		params = dict(
 			fields = 'id,from,message,comments',
-			access_token = self.access_token
+			access_token = self.access_token,
+			since = since,
+			limit = limit,
 		)
 		response = requests.get(url=url, params=params)
 
 		list_posts = {}
 		list_posts_raw = self.get_json_attribute(response.json(), 'data', [])
 		for post_raw in list_posts_raw:
-			post_id = post_raw['id'].encode('utf-8')
-			post_message = self.get_json_attribute(post_raw, 'message', '').encode('utf-8')
-			post_creator_id = post_raw['from']['id'].encode('utf-8')
+			#get basic information:
+			post_id = post_raw['id']
+			post_message = self.get_json_attribute(post_raw, 'message', '')
+			post_creator_id = self.get_json_attribute(post_raw, 'from', {'id':[]})['id']
 
+			#get comments:
 			list_comments = {}
 			list_comments_raw = self.get_json_attribute(post_raw['comments'], 'data', [])
 			for comment_raw in list_comments_raw:
-				comment_id =  comment_raw['id'].encode('utf-8')
-				comment_message = comment_raw['message'].encode('utf-8')
-				comment_creator_id = comment_raw['from']['id'].encode('utf-8')
+				comment_id =  comment_raw['id']
+				comment_message = comment_raw['message']
+				comment_creator_id = comment_raw['from']['id']
 				list_comments[comment_id] = [comment_message, comment_creator_id]
 
-			list_posts[post_id] = [post_message, post_creator_id, list_comments]
+			#get reactions:
+			reactions = self.get_reaction_of_one_post(post_id.encode('utf-8'))
 
+			list_posts[post_id] = [post_message, post_creator_id, reactions, list_comments]
+			
 		return list_posts

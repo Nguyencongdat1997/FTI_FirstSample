@@ -1,0 +1,71 @@
+version: '2'
+services:
+    web:
+        build: .
+        environment:
+            - FLASK_ENV=development           
+        ports:
+            - "5001:5001"
+        volumes:
+            - .:/code
+        networks:
+            - net1
+        depends_on:
+            - konga
+
+    kong-database:
+        image: postgres:9.6
+        environment:
+            - POSTGRES_USER=kong
+            - POSTGRES_DB=kong
+        networks:
+            - net1
+        ports:
+            - "5432:5432"
+
+    kong-migration:
+        image: kong
+        depends_on:
+            - kong-database
+        environment:
+            - KONG_DATABASE=postgres
+            - KONG_PG_HOST=kong-database
+        command: kong migrations up
+        networks:
+            - net1
+
+    kong:
+        image: kong
+        depends_on:
+            - kong-database
+            - kong-migration
+        environment:
+            - KONG_DATABASE=postgres
+            - KONG_PG_HOST=kong-database
+            - KONG_PROXY_ACCESS_LOG=/dev/stdout
+            - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+            - KONG_PROXY_ERROR_LOG=/dev/stderr
+            - KONG_ADMIN_ERROR_LOG=/dev/stderr
+            - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+        networks:
+            - net1
+        ports:
+            - "8000:8000"
+            - "8443:8443"
+            - "8001:8001"
+            - "8444:8444"
+
+    konga:
+        image: pantsel/konga
+        depends_on:
+            - kong
+        environment:
+            - TOKEN_SECRET=0123456789
+        ports:
+            - "1337:1337"
+        networks:
+            - net1
+
+networks:
+    net1:
+        driver: bridge
