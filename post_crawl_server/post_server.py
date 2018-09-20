@@ -1,4 +1,5 @@
 from flask import Flask, g, jsonify
+from redis import Redis
 import sys
 sys.path.insert(0, './utilities')
 from facebookapi_connector import FacebookAPIConnector
@@ -8,7 +9,7 @@ import datetime
 
 app = Flask(__name__)
 
-@app.route("/hello/")
+@app.route("/hello")
 def home():
 	return 'Welcome'
 
@@ -34,8 +35,9 @@ def crawl(uid, since, limit):
 			thankful= post[2]['THANKFUL'], 
 			time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S").encode('utf-8')
 		)		
+		data_to_save = dict((k,str(v)) for k,v in data_to_save.items())
 		print(data_to_save)
-		post_saver.write_to_file(json.dumps(data_to_save, ensure_ascii = False, encoding = 'utf-8'))
+		post_saver.write_to_file(json.dumps(data_to_save, ensure_ascii = False).encode('utf-8'))
 		count += 1
 		print(str(count))
 	return '200'
@@ -43,7 +45,7 @@ def crawl(uid, since, limit):
 facebookapi_connector = FacebookAPIConnector()
 #user_dao = UserDAO()
 post_saver = PostSaver()
-app.run(port=5001)
+app.run(host="0.0.0.0",port="5001",debug=True)
 
 #db.create_all()
 

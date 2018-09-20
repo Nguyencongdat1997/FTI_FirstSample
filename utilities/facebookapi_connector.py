@@ -44,7 +44,7 @@ class FacebookAPIConnector(object):
 		return friend_ids
 
 	def get_reaction_of_one_post(self, post_id):
-		url = self.url + post_id + '/reactions/'
+		url = self.url + str(post_id) + '/reactions/'
 		params = dict(
 			fields = 'type',
 			access_token = self.access_token,
@@ -60,7 +60,7 @@ class FacebookAPIConnector(object):
 
 
 	def get_posts_of_one_user(self, uid, since, limit):
-		url = self.url + uid + '/feed/'
+		url = self.url + str(uid) + '/feed/'
 		params = dict(
 			fields = 'id,from,message,comments',
 			access_token = self.access_token,

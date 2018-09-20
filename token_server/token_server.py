@@ -58,7 +58,7 @@ def view_all_tokens():
 
 
 token_dao = TokenDAO()
-app.run()
+app.run(host="0.0.0.0",port="5000",debug=True)
 
 #db.create_all()
 

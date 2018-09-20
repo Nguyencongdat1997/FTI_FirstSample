@@ -49,13 +49,14 @@ class FileSaver(object):
 
 	def create_file(self, new_file_name):
 		file_path = self.folder + new_file_name
-		file_handle = open(file_path, 'w')
+		file_handle = open(file_path, 'w', encoding = 'utf-8')
 		file_handle.close()		
 
 	def write_to_file(self, new_line_text):
 		file_path = self.folder + self.file_name
-		file_handle = open(file_path, 'a')
-		file_handle.write(new_line_text.encode('utf-8') + '\n')
+		file_handle = open(file_path, 'ab')
+		file_handle.write(new_line_text)
+		file_handle.write('\n'.encode('utf-8'))
 		file_handle.close()
 
 		
