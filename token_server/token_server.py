@@ -7,7 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///token.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-db.init_app(app)
 
 
 @app.route("/get")
@@ -42,9 +41,15 @@ def block_token(value):
 def clear_database():
 	meta = db.metadata
 	for table in reversed(meta.sorted_tables):
-		print 'Clear table %s' % table
+		print('Clear table %s' % table)
 		db.session.execute(table.delete())
 	db.session.commit()
+	return 'OK', 200
+
+
+@app.route("/createdb")
+def create_database():
+	db.create_all()
 	return 'OK', 200
 
 
@@ -56,11 +61,9 @@ def view_all_tokens():
 	 result += x.token_value + ':' + x.valid_time + '\n'
 	return result, 200
 
-
+db.init_app(app)
 token_dao = TokenDAO()
 app.run(host="0.0.0.0",port="5000",debug=True)
-
-#db.create_all()
 
 
 
