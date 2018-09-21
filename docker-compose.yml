@@ -13,9 +13,6 @@ services:
             - net1
         depends_on:
             - konga
-            - redis
-    redis:
-        image: redis
 
     kong-database:
         image: postgres:9.6
