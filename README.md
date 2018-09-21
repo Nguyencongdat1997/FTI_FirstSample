@@ -1,6 +1,6 @@
 # FTI_FirstSample
-Target OS Environment : CentOS Linux - VERSION: 7
-Pre-requirement: 
+- Target OS Environment : CentOS Linux - VERSION: 7
+- Pre-requirement: 
    - Docker
    - Docker-compose
    
@@ -44,9 +44,9 @@ Pre-requirement:
         
 
 # Example Possible Running Cycle:
-Run docker:
+- Run docker:
    - docker-compose up -d
-Access API:
+- Access API:
    - host_name:5000/createdb  #OPTIONAL: run in the first time setup
    - host_name:5000/insert/<token_value>
    - host_name:5001/crawl/<_uid>/<_since>/<_limit>
